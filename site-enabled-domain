@@ -1,0 +1,45 @@
+
+
+server {
+    server_name odoo.m-m.com;
+
+    location ^~ /static/ {
+        include /etc/nginx/mime.types;
+        root  /home/my_username/path/to/code/;
+    }
+
+    location / {
+        proxy_pass http://localhost:8069;
+        include /etc/nginx/proxy_params;
+        proxy_redirect off;
+        proxy_read_timeout 300s;
+    }
+
+   listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/odoo.x-x.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/odoo.m-m.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+server {
+    if ($host = odoo.m-m.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+    if ($host = odoo.m-m.com) {
+        return 301 https://$host$request_uri;
+    } # Manually added by me
+
+    server_name = odoo.m-m.com;
+    listen 80;
+    return 404; # managed by Certbot
+}
+
+   
+
+
+
+
+
+
